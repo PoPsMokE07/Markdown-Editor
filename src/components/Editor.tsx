@@ -3,7 +3,6 @@ import { RootState } from '../app/store'
 import { updateContent } from '../features/documents/documentsSlice'
 import ReactMarkdown from 'react-markdown'
 import { useEffect, useState } from 'react'
-import { useDebounce } from '../hooks/useDebounce'
 import remarkGfm from 'remark-gfm'
 import styled from 'styled-components'
 
@@ -81,20 +80,22 @@ const Editor = () => {
 
   const [localContent, setLocalContent] = useState('')
 
+  // Reset localContent when active document changes
   useEffect(() => {
-    setLocalContent(activeDoc?.content || '')
-  }, [activeDoc?.id, activeDoc?.content])
-
-  const debouncedContent = useDebounce(localContent, 500)
-
-  useEffect(() => {
-    if (activeDoc && debouncedContent !== undefined) {
-      dispatch(updateContent({ id: activeDoc.id, content: debouncedContent }))
+    if (activeDoc) {
+      setLocalContent(activeDoc.content || '')
+    } else {
+      setLocalContent('')
     }
-  }, [debouncedContent, dispatch, activeDoc])
+  }, [activeDoc?.id, activeDoc])
 
+  // Update Redux store immediately when local content changes
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setLocalContent(e.target.value)
+    const newContent = e.target.value
+    setLocalContent(newContent)
+    if (activeDoc) {
+      dispatch(updateContent({ id: activeDoc.id, content: newContent }))
+    }
   }
 
   if (!activeDoc) {

@@ -87,7 +87,7 @@ const Sidebar = () => {
       if (lastDoc) {
         dispatch(setActiveDocument(lastDoc.id))
       }
-    }, 0)
+    }, 0)//Waits until finish updating, before you try to find and activate the newly created document.
   }
 
   return (

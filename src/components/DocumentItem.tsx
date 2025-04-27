@@ -9,17 +9,17 @@ import { RootState } from '../app/store'
 import styled from 'styled-components'
 import { useState, useRef, useEffect } from 'react'
 
-const DocumentItemContainer = styled.div<{ isActive: boolean }>`
+const DocumentItemContainer = styled.div<{ $isActive: boolean }>`
   padding: 0.75rem;
   border: 1px solid var(--border-color);
   border-radius: 0.375rem;
   margin-bottom: 0.5rem;
-  background-color: ${props => props.isActive ? 'var(--primary-color)' : 'var(--background-color)'};
-  color: ${props => props.isActive ? 'white' : 'var(--text-color)'};
+  background-color: ${props => props.$isActive ? 'var(--primary-color)' : 'var(--background-color)'};
+  color: ${props => props.$isActive ? 'white' : 'var(--text-color)'};
   cursor: pointer;
   transition: all 0.2s;
   &:hover {
-    background-color: ${props => props.isActive ? 'var(--primary-hover)' : 'var(--sidebar-background)'};
+    background-color: ${props => props.$isActive ? 'var(--primary-hover)' : 'var(--sidebar-background)'};
     border-color: var(--primary-color);
   }
 `
@@ -113,7 +113,7 @@ const DocumentItem = ({ document }: Props) => {
   }
 
   return (
-    <DocumentItemContainer isActive={isActive} onClick={handleClick}>
+    <DocumentItemContainer $isActive={isActive} onClick={handleClick}>
       <TitleInput
         ref={titleInputRef}
         value={document.title}
